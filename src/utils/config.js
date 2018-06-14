@@ -1,8 +1,11 @@
 // 配置项
 
-const host = 'https://f9c8f402d42c36263c2d.xiaoapp.io'
+ //从知晓云后台查询得到
+const booksTableID = 38446
+const commentsTableID = 40227
 
 const config = {
-  host
+  booksTableID,
+  commentsTableID
 }
 export default config

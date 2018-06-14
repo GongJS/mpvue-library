@@ -8,7 +8,7 @@ Vue.use(Vuex)
 const store = new Vuex.Store({
   state: {
     userInfo: {
-      avatarUrl: '../../../static/img/unlogin.png'
+      avatarUrl: '../../static/img/unlogin.png'
     }
   },
   mutations: {

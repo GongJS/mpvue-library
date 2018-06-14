@@ -2,18 +2,16 @@ import Vue from 'vue'
 import App from './App'
 
 Vue.config.productionTip = false
-App.mpType = 'app'
-
 const app = new Vue(App)
 app.$mount()
 
 export default{
   config: {
-    pages: ['^pages/me/main'],
+    pages: ['^pages/books/main'],
     'window': {
       'backgroundTextStyle': 'light',
       'navigationBarBackgroundColor': '#EA5149',
-      'navigationBarTitleText': '蜗牛图书',
+      'navigationBarTitleText': '小回忆图书馆',
       'navigationBarTextStyle': 'light'
     },
     'tabBar': {
@@ -37,6 +35,7 @@ export default{
           iconPath: 'static/img/me.png',
           selectedIconPath: 'static/img/me-active.png'
         }
+
       ]
     }
   }

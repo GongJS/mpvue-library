@@ -7,24 +7,17 @@
       <YearProgress></YearProgress>
       <button v-if="userInfo.openid" @click='scanBook' class='btn'>添加图书</button>
     </div>
-    <div class="test">
-      <div>pppp</div>
-    </div>
   </div>
 </template>
 
 <script>
-import store from './store';
-import { showSuccess, get, showModal } from '@/utils/index';
-import YearProgress from '@/components/YearProgress';
+import store from '@/store'
+import config from '@/utils/config'
+import { showSuccess,getData,addData,showModal } from '@/utils/index'
+import YearProgress from '@/components/YearProgress'
 export default {
   components: {
     YearProgress
-  },
-  data() {
-    return {
-      tableID: 38446 //从知晓云后台查询得到
-    };
   },
   computed: {
     userInfo() {
@@ -48,74 +41,47 @@ export default {
     scanBook() {
       wx.scanCode({
         success: async res => {
-          let Books = new wx.BaaS.TableObject(this.tableID); //实例化对应 tableID 的数据表对象
-          let book = Books.create(); // 创建一条记录
           let bookIsbn = res.result;
           let openid = store.state.userInfo.openid;
-          let query = new wx.BaaS.Query();
-          query.compare('bookIsbn', '=', bookIsbn);
           if (bookIsbn && openid) {
-            Books.setQuery(query).find().then(res => {
-                  // success
-                  if (res.data.meta.total_count === 0) {
-                    let url = 'https://api.douban.com/v2/book/isbn/' + bookIsbn
-                    wx.BaaS.invokeFunction('doubanApi', { url: url }).then(res => {
-                        if (res.code === 0) {
-                          // success·
-                          const bookinfo = res.data;
-                          console.log(bookinfo)
-                          const rate = bookinfo.rating.average;
-                          const { title,image,alt,publisher,summary,price} = bookinfo;
-                          const tags = bookinfo.tags.map(v => {return `${v.title} ${v.count}`}).join(',')
-                          const author = bookinfo.author.join(',')
-                          console.log(openid,bookIsbn,rate,title,image,alt,publisher,summary,price,tags,author)
-                          book.set({openid,bookIsbn,rate,title,image,alt,publisher,summary,price,tags,author}).save()
-                            .then(() => {
-                              //...
-                              showModal('添加成功', `${title}添加成功`)
-                            });
-                        } else {
-                          // fail
-                          console.log(res.error.message);
-                        }
+              const book = await getData(config.booksTableID,'bookIsbn','=',bookIsbn)
+              if (book.length === 0) {
+                let url = 'https://api.douban.com/v2/book/isbn/' + bookIsbn
+                //知晓云  云函数
+                   wx.BaaS.invokeFunction('doubanApi', { url: url }).then(async res => {
+                      if (res.code === 0) {
+                        const bookinfo = res.data;
+                        const addBookPerson = store.state.userInfo.nickName
+                        const rate = bookinfo.rating.average;
+                        const {title,alt,image,publisher,summary,price} = bookinfo;
+                        const tags = bookinfo.tags.map(v => {return `${v.title} ${v.count}`}).join(',')
+                        const author = bookinfo.author.join(',')
+                        const dataInfo = {addBookPerson,openid,bookIsbn,rate,title,image,alt,publisher,summary,price,tags,author}
+                        const addBook = await addData(config.booksTableID,dataInfo)
+                      } else {
+                        console.log(res.error.message);
                       }
-                    );
-                  } else {
-                    showModal('添加失败', '该图书已经存在');
-                  }
-                },
-                err => {
-                  // err
-                }
-              );
+                    }
+                  )
+              } else {
+                showModal('添加失败', '该图书已经存在');
+              }
           }
         }
-      });
+      })
     }
   }
-};
+}
 </script>
-
 <style lang="stylus">
-.container {
+.container
   padding: 0 30rpx;
-
-  .userinfo {
+  .userinfo
     margin-top: 100rpx;
     text-align: center;
-
-    img {
+    img
       width: 150rpx;
       height: 150rpx;
       margin: 20rpx;
       border-radius: 50%;
-    }
-  }
-
-  .test {
-    height: 150rpx;
-    width: 150rpx;
-    background: red;
-  }
-}
 </style>
