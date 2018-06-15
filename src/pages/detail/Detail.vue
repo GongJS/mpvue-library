@@ -21,8 +21,11 @@
       评论
     </button>
   </div>
-  <div v-else class='text-footer'>
-    未登录或者已经评论过啦
+  <div v-if="!userInfo.openid" class='text-footer'>
+    登录后才能发布评论
+  </div>
+  <div v-if="userInfo.openid && isComment" class='text-footer'>
+    已经发表过评论了
   </div>
   <button open-type='share' class="btn">转发给好友</button>
 </div>
@@ -89,8 +92,17 @@ export default {
        }
     },
     async getComments () {
-      const getComments = await getData(config.commentsTableID,'bookid','=',this.bookid)
-      this.comments = getComments || []
+      const getBookComments = await getData(config.commentsTableID,'bookid','=',this.bookid)
+      this.comments = getBookComments || []
+      console.log(33333,store.state.userInfo.openid)
+      if(store.state.userInfo.openid){
+        const getPersonComments = await getData(config.commentsTableID,'openid','=',store.state.userInfo.openid)
+        if(this.comments.filter(v => v.openid === getPersonComments.openid).length) {
+           this.isComment = true
+        }
+      }
+
+      console.log(111111,store.state.userInfo.openid,this.isComment)
     },
    async getGeo (e) {
       const ak = 'nEzZImjWniLd9hMOgXezCWvjYqa8c2WC'

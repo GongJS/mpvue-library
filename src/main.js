@@ -25,18 +25,18 @@ export default{
         },
         {
           pagePath: 'pages/comments/main',
-          text: '评论',
+          text: '收藏',
           iconPath: 'static/img/todo.png',
           selectedIconPath: 'static/img/todo-active.png'
         },
         {
           pagePath: 'pages/me/main',
-          text: '我',
+          text: '用户',
           iconPath: 'static/img/me.png',
           selectedIconPath: 'static/img/me-active.png'
         }
-
       ]
-    }
+    },
+
   }
 }

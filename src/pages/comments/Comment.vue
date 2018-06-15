@@ -1,8 +1,13 @@
 <template>
   <div class="container">
-    <div v-if="!userInfo.openid">
-      还没有登陆哦
+    <div class="login" v-if="!userInfo.openid">
+      没有登录T_T
+        <img class="img"
+            src="./test.gif"
+            mode='aspectFit'
+          >
     </div>
+
     <CommentList v-if='userInfo.openid' type='user' :comments="comments"></CommentList>
     <div v-if='userInfo.openid'>
       <div class="page-title">我的图书</div>
@@ -62,5 +67,13 @@ export default {
   }
 }
 </script>
-<style>
+<style lang="stylus">
+  .login
+    text-align: center;
+    font-size: 60rpx;
+    color: #515151;
+    margin-top: 80rpx;
+    margin-bottom: 80rpx;
+    .img
+      margin-top 80rpx;
 </style>
