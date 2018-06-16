@@ -1,9 +1,13 @@
 <template>
   <div>
+    <BookHeader @searchBook='searchBook' @receive='receive'></BookHeader>
     <TopSwiper :tops='tops'></TopSwiper>
     <Card :key='book.id' v-for='book in books' :book='book'></Card>
+    <p class='text-footer' v-if='searchResult'>
+      找不到该书籍T_T
+    </p>
     <p class='text-footer' v-if='!more'>
-      没有更多数据
+      没有更多数据T_T
     </p>
   </div>
 </template>
@@ -14,23 +18,47 @@
 // 1. page=0 不能显示这条提醒
 // 2. page>0 数据长度<6 停止触底加载
 import config from '@/utils/config'
-import {getData} from '@/utils/index'
+import {getData,getStringData} from '@/utils/index'
 import Card from '@/components/Card'
+import BookHeader from '@/components/BookHeader'
 import TopSwiper from '@/components/TopSwiper'
 export default {
   components:{
     Card,
-    TopSwiper
+    TopSwiper,
+    BookHeader
   },
   data(){
     return {
       books:[],
       tops: [],
       page:0,
-      more:true
+      more:true,
+      searchResult:false
     }
   },
   methods:{
+    async receive (select){
+       if(select === '图书') {
+        this.getList(true)
+      }
+      this.searchResult = false
+      this.books = []
+      const bookList = await getStringData(config.booksTableID,'tags',select)
+      this.books = bookList || []
+       if (this.books[0] === undefined){
+        this.searchResult = true
+      }
+    },
+    async searchBook (msg) {
+      this.searchResult = false
+      this.books = []
+      const bookList = await getStringData(config.booksTableID,'title',msg)
+      this.books = bookList || []
+      if (this.books[0] === undefined){
+        this.searchResult = true
+      }
+    },
     async getList(init){
       if(init){
         this.page = 0
@@ -73,4 +101,7 @@ export default {
 }
 </script>
 <style lang='stylus'>
+  .text-footer
+    font-size:32rpx
+    margin-top:20rpx
 </style>

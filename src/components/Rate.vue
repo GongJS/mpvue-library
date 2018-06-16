@@ -4,7 +4,6 @@
     <div class="hollow" :style='style'>
       ★★★★★
     </div>
-
   </div>
 </template>
 <script>
