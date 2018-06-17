@@ -14,6 +14,9 @@ const store = new Vuex.Store({
   mutations: {
     updateUserInfo (state,data) {
       state.userInfo = data
+    },
+    logOut (state) {
+      state.userInfo = {}
     }
   }
 })

@@ -72,8 +72,11 @@ export function addData (TableID,dataInfo){
           if(dataInfo.title) {
             showModal("成功",`${dataInfo.title}添加成功`)
             resolve(res)
-          } else {
+          }
+          if(dataInfo.comment) {
             showModal("成功",'评论发表成功')
+            resolve(res)
+          } else {
             resolve(res)
           }
         }, err => {

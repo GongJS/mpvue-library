@@ -60,7 +60,7 @@ export default {
 <style lang='stylus'>
   .header
     display: flex
-    background: #00bcd4
+    background: #F38181
     line-height: 86rpx
     color: #fff
     .header-left

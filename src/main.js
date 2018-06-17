@@ -9,12 +9,12 @@ export default{
     pages: ['^pages/books/main'],
     'window': {
       'backgroundTextStyle': 'light',
-      'navigationBarBackgroundColor': '#EA5149',
+      'navigationBarBackgroundColor': '#F38181',
       'navigationBarTitleText': '小回忆图书馆',
       'navigationBarTextStyle': 'light'
     },
     'tabBar': {
-      selectedColor: '#EA5149',
+      selectedColor: '#95E1D3',
       list: [
         {
           pagePath: 'pages/books/main',

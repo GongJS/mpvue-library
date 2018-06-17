@@ -27,7 +27,8 @@
   <div v-if="userInfo.openid && isComment" class='text-footer'>
     已经发表过评论了
   </div>
-  <button open-type='share' class="btn">转发给好友</button>
+  <button  class="btn" @click="collectBook">收藏图书</button>
+  <button  open-type='share' class="btn">转发给好友</button>
 </div>
 
 </template>
@@ -73,6 +74,33 @@ export default {
     }
   },
   methods:{
+    async collectBook () {
+      console.log(this.info)
+       if(!store.state.userInfo.openid){
+         showModal("失败",'请先登录')
+         return
+       }
+      const bookid = this.bookid
+      const getcollectBook = await getData(config.collectBooksTableID,'bookid','=',bookid)
+      if (getcollectBook.length === 1) {
+        showModal("失败",'已收藏过该图书')
+        return
+      }
+      const openid = store.state.userInfo.openid
+      const image = this.info.image
+      const addPersonName = store.state.userInfo.nickName
+      const title = this.info.title
+      const publisher = this.info.publisher
+      const rate =  this.info.rate
+      const author = this.info.author
+      const count = this.info.count
+      const dataInfo = {openid,image,bookid,title,addPersonName,publisher,rate,title,author,count}
+      console.log(dataInfo)
+      const collectBook = await addData(config.collectBooksTableID,dataInfo)
+      if (collectBook.statusCode === 201) {
+            showModal("成功",'收藏成功')
+          }
+    },
     async addComment () {
       if (!this.comment) {
         return
@@ -80,12 +108,13 @@ export default {
       // 评论内容 手机型号  地理位置 图书id 用户的openid
       console.log(store.state.userInfo)
        const openid = store.state.userInfo.openid
+       const image = this.info.image
        const addPersonName = store.state.userInfo.nickName
        const bookid = this.bookid
        const comment = this.comment
        const location = this.location
        const phone = this.phone
-       const dataInfo = {openid,bookid,comment,location,phone,addPersonName}
+       const dataInfo = {openid,image,bookid,comment,location,phone,addPersonName}
        const addComment = await addData(config.commentsTableID,dataInfo,addPersonName)
        if (addComment.statusCode === 201) {
          this.isComment = true
@@ -94,15 +123,12 @@ export default {
     async getComments () {
       const getBookComments = await getData(config.commentsTableID,'bookid','=',this.bookid)
       this.comments = getBookComments || []
-      console.log(33333,store.state.userInfo.openid)
       if(store.state.userInfo.openid){
         const getPersonComments = await getData(config.commentsTableID,'openid','=',store.state.userInfo.openid)
         if(this.comments.filter(v => v.openid === getPersonComments.openid).length) {
            this.isComment = true
         }
       }
-
-      console.log(111111,store.state.userInfo.openid,this.isComment)
     },
    async getGeo (e) {
       const ak = 'nEzZImjWniLd9hMOgXezCWvjYqa8c2WC'
@@ -154,6 +180,9 @@ export default {
         console.log(err)
       })
       const bookData = await getData(config.booksTableID,'id','=',this.bookid)
+
+
+
       console.log(bookData)
       this.info = bookData[0]
       this.info.tags = this.info.tags.split(",")

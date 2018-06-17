@@ -2,7 +2,7 @@
   <div>
     <BookHeader @searchBook='searchBook' @receive='receive'></BookHeader>
     <TopSwiper :tops='tops'></TopSwiper>
-    <Card :key='book.id' v-for='book in books' :book='book'></Card>
+    <Card :key='book.id' v-for='book in books' :book='book' type='libraryBook'></Card>
     <p class='text-footer' v-if='searchResult'>
       找不到该书籍T_T
     </p>
@@ -40,7 +40,8 @@ export default {
   methods:{
     async receive (select){
        if(select === '图书') {
-        this.getList(true)
+         this.getList(true)
+         return
       }
       this.searchResult = false
       this.books = []

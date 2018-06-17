@@ -43,10 +43,18 @@ export default {
   components:{
     Rate
   },
-  props:['book'],
+  props:['book','type'],
   computed:{
     detailUrl(){
-      return '/pages/detail/main?id='+this.book.id
+      if(this.type === 'scanBooks') {
+        return '/pages/detail/main?id='+this.book.id
+      }
+      if(this.type === 'collectBooks') {
+        return '/pages/detail/main?id='+this.book.bookid
+      }
+      if(this.type === 'libraryBook') {
+        return '/pages/detail/main?id='+this.book.id
+      }
     }
   },
   methods:{

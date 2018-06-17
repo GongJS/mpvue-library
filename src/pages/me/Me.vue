@@ -5,6 +5,7 @@
       <button open-type="getUserInfo" @getuserinfo="userInfoHandler" v-if="!userInfo.openid" class='btn'>登录</button>
       <p v-if="userInfo.openid">{{userInfo.nickName}}</p>
       <YearProgress></YearProgress>
+      <button v-if="userInfo.openid" @click='logOut' class='btn'>注销登录</button>
       <button v-if="userInfo.openid" @click='scanBook' class='btn'>添加图书</button>
     </div>
   </div>
@@ -25,6 +26,10 @@ export default {
     }
   },
   methods: {
+    logOut() {
+      console.log(store.state.userInfo)
+      store.commit('logOut');
+    },
     userInfoHandler(data) {
       wx.BaaS.handleUserInfo(data.mp).then(
         res => {
