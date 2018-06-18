@@ -13,12 +13,12 @@
     <div v-if='userInfo.openid'>
       <div class="page-title">添加的图书</div>
          <Card v-for='(book,index) in scanBooks' :key='index' :book='book' type='scanBooks'></Card>
-      <div v-if='!books.length'>暂时还没添加过书，快去添加几本吧</div>
+      <div v-if='!scanBooks.length'>暂时还没添加过书，快去添加几本吧</div>
     </div>
       <div v-if='userInfo.openid'>
       <div class="page-title">收藏的图书</div>
          <Card v-for='(book,index) in collectBooks' :key='index' :book='book' type='collectBooks'></Card>
-      <div v-if='!books.length'>暂时还没收藏过书，快去收藏几本吧</div>
+      <div v-if='!collectBooks.length'>暂时还没收藏过书，快去收藏几本吧</div>
     </div>
   </div>
 </template>
@@ -34,8 +34,6 @@ export default {
       comments: [],
       scanBooks: [],
       collectBooks: [],
-      books:[]
-
     }
   },
   components: {
@@ -53,15 +51,11 @@ export default {
       this.getComments()
       this.getScanBooks()
       this.getCollectBook()
-
-
-      console.log(111,this.books)
       wx.hideNavigationBarLoading()
     },
     async getScanBooks() {
       const books = await getData(config.booksTableID,'openid','=',store.state.userInfo.openid)
       this.scanBooks = books
-      this.books[0] = this.scanBooks
     },
     async getComments() {
       const comments = await getData(config.commentsTableID,'openid','=',store.state.userInfo.openid)
@@ -70,8 +64,6 @@ export default {
     async getCollectBook () {
       const getCollectBook = await getData(config.collectBooksTableID,'openid','=',store.state.userInfo.openid)
       this.collectBooks = getCollectBook
-      this.books[1] = this.collectBooks
-      console.log(3333,this.collectBooks)
     }
   },
   onPullDownRefresh() {

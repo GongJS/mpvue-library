@@ -51,7 +51,8 @@ export default {
       comment: '',
       location: '',
       phone: '',
-      isComment: false
+      isComment: false,
+      isCollect: false
     }
   },
    computed: {
@@ -65,9 +66,12 @@ export default {
       }
       // 评论页面里查到有自己的openid
       if (this.comments.filter(v => v.openid === store.state.userInfo.openid).length) {
+        console.log(999)
+        this.isComment = true
         return false
       }
       if(this.isComment){
+        console.log(777)
         return false
       }
       return true
@@ -75,18 +79,25 @@ export default {
   },
   methods:{
     async collectBook () {
-      console.log(this.info)
        if(!store.state.userInfo.openid){
          showModal("失败",'请先登录')
          return
        }
       const bookid = this.bookid
+      const openid = store.state.userInfo.openid
       const getcollectBook = await getData(config.collectBooksTableID,'bookid','=',bookid)
-      if (getcollectBook.length === 1) {
-        showModal("失败",'已收藏过该图书')
+      if (getcollectBook.length >= 1) {
+          getcollectBook.map(v => {
+          if(v.openid === openid) {
+            showModal("失败",'已收藏过该图书')
+            this.isCollect = true
+          }
+        })
+      }
+      if(this.isCollect) {
+        this.isCollect = false
         return
       }
-      const openid = store.state.userInfo.openid
       const image = this.info.image
       const addPersonName = store.state.userInfo.nickName
       const title = this.info.title
@@ -95,20 +106,16 @@ export default {
       const author = this.info.author
       const count = this.info.count
       const dataInfo = {openid,image,bookid,title,addPersonName,publisher,rate,title,author,count}
-      console.log(dataInfo)
       const collectBook = await addData(config.collectBooksTableID,dataInfo)
-      if (collectBook.statusCode === 201) {
-            showModal("成功",'收藏成功')
-          }
     },
     async addComment () {
-      if (!this.comment) {
+      // 评论内容 手机型号  地理位置 图书id 用户的openid
+      if(this.comment === ''){
+        showModal("失败",'评论内容不能为空')
         return
       }
-      // 评论内容 手机型号  地理位置 图书id 用户的openid
-      console.log(store.state.userInfo)
        const openid = store.state.userInfo.openid
-       const image = this.info.image
+       const image = store.state.userInfo.avatarUrl
        const addPersonName = store.state.userInfo.nickName
        const bookid = this.bookid
        const comment = this.comment
@@ -117,18 +124,15 @@ export default {
        const dataInfo = {openid,image,bookid,comment,location,phone,addPersonName}
        const addComment = await addData(config.commentsTableID,dataInfo,addPersonName)
        if (addComment.statusCode === 201) {
+         this.comment = ''
          this.isComment = true
+         this.getComments()
        }
     },
     async getComments () {
       const getBookComments = await getData(config.commentsTableID,'bookid','=',this.bookid)
       this.comments = getBookComments || []
-      if(store.state.userInfo.openid){
-        const getPersonComments = await getData(config.commentsTableID,'openid','=',store.state.userInfo.openid)
-        if(this.comments.filter(v => v.openid === getPersonComments.openid).length) {
-           this.isComment = true
-        }
-      }
+
     },
    async getGeo (e) {
       const ak = 'nEzZImjWniLd9hMOgXezCWvjYqa8c2WC'
@@ -180,10 +184,6 @@ export default {
         console.log(err)
       })
       const bookData = await getData(config.booksTableID,'id','=',this.bookid)
-
-
-
-      console.log(bookData)
       this.info = bookData[0]
       this.info.tags = this.info.tags.split(",")
       this.info.summary = this.info.summary.split(",")
@@ -206,6 +206,8 @@ export default {
     this.bookid = this.$root.$mp.query.id
     this.getDetail()
     this.getComments()
+    console.log(666666)
+    this.isComment = false
   }
 }
 </script>
