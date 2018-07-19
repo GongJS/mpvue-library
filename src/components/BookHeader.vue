@@ -1,18 +1,18 @@
 <template>
 <div>
   <div class="header">
-    <div class='header-left'>搜索</div>
+    <div class="header-left">搜索</div>
     <div class='header-input'>
       <input class="input" placeholder="请输入图书名称" v-model="search">
-         <img  class="img" mode='aspectFit' src="./test.png" >
+      <i class="iconfont icon-sousuo"></i>
     </div>
     <div class='header-right'>
-      <p class="header-right-text">{{selectItem}}</p>
-      <img class="img" mode='aspectFit' src="./test1.png" v-on:click='wrap'>
+      <span class="header-right-text">{{selectItem}}</span>
+      <i class="iconfont icon-jiantouarrow486" v-on:click="wrap"></i>
     </div>
   </div>
   <ul class="select" :class="active">
-      <li class="li" :key=index v-for='(item,index) of list' v-on:click='selectLi(item)'>{{item}}</li>
+      <li class="li" :key=index v-for='(item,index) of list' v-on:click='selectList(item)'>{{item}}</li>
   </ul>
 </div>
 </template>
@@ -39,8 +39,8 @@ export default {
     wrap () {
        this.isActive = !this.isActive
     },
-    selectLi(item) {
-      this.selectItem = item.substr(0,2)
+    selectList(item) {
+      this.selectItem = item
       this.isActive = !this.isActive
       this.$emit('receive', item)
     }
@@ -84,32 +84,18 @@ export default {
         top: 0
         font-size:30rpx
         color:red
-      .img
-        width: 50rpx
-        height: 50rpx
-        margin-top: 7rpx
-        margin-left: 5rpx
-      .input-text
+      .iconfont
         display: inline-block
-        font-size: 30rpx
-        line-height 64rpx
-        height: 64rpx
+        margin-left: 10rpx
     .header-right
       float: right
-      width: 144rpx
+      min-width: 144rpx
       text-align: center
       margin-right: 20rpx
       margin-top: 0rpx
-      margin-left:-10rpx
-      .header-right-text
+      margin-left:10rpx
+      .iconfont
         display: inline-block
-      .img
-        float: right
-        width: 50rpx
-        height: 50rpx
-        margin-top: 20rpx
-        margin-right: -10rpx
-        margin-left:-20rpx
   .select
     position: absolute;
     z-index: 1

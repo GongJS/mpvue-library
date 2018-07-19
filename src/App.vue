@@ -18,6 +18,7 @@ export default {
 </script>
 
 <style lang="stylus">
+@import '../static/iconfont/iconfont.css'
   .text-footer
     text-align: center;
     font-size: 12px;

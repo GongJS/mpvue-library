@@ -27,7 +27,6 @@
   <div v-if="userInfo.openid && isComment" class='text-footer'>
     已经发表过评论了
   </div>
-  <button  class="btn" @click="collectBook">收藏图书</button>
   <button  open-type='share' class="btn">转发给好友</button>
 </div>
 
@@ -66,48 +65,16 @@ export default {
       }
       // 评论页面里查到有自己的openid
       if (this.comments.filter(v => v.openid === store.state.userInfo.openid).length) {
-        console.log(999)
         this.isComment = true
         return false
       }
       if(this.isComment){
-        console.log(777)
         return false
       }
       return true
     }
   },
   methods:{
-    async collectBook () {
-       if(!store.state.userInfo.openid){
-         showModal("失败",'请先登录')
-         return
-       }
-      const bookid = this.bookid
-      const openid = store.state.userInfo.openid
-      const getcollectBook = await getData(config.collectBooksTableID,'bookid','=',bookid)
-      if (getcollectBook.length >= 1) {
-          getcollectBook.map(v => {
-          if(v.openid === openid) {
-            showModal("失败",'已收藏过该图书')
-            this.isCollect = true
-          }
-        })
-      }
-      if(this.isCollect) {
-        this.isCollect = false
-        return
-      }
-      const image = this.info.image
-      const addPersonName = store.state.userInfo.nickName
-      const title = this.info.title
-      const publisher = this.info.publisher
-      const rate =  this.info.rate
-      const author = this.info.author
-      const count = this.info.count
-      const dataInfo = {openid,image,bookid,title,addPersonName,publisher,rate,title,author,count}
-      const collectBook = await addData(config.collectBooksTableID,dataInfo)
-    },
     async addComment () {
       // 评论内容 手机型号  地理位置 图书id 用户的openid
       if(this.comment === ''){
@@ -206,7 +173,6 @@ export default {
     this.bookid = this.$root.$mp.query.id
     this.getDetail()
     this.getComments()
-    console.log(666666)
     this.isComment = false
   }
 }

@@ -80,7 +80,7 @@ export default {
       wx.hideNavigationBarLoading()
     },
     async getTop(){
-      const topsList = await getData(config.booksTableID,'count','>=',0,9,undefined,'count')
+      const topsList = await getData(config.booksTableID,'count','>=',0,9,undefined,'-count')
       this.tops = topsList
     }
   },

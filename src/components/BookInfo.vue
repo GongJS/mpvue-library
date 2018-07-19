@@ -32,6 +32,7 @@
     </div>
     <div class="tags">
       <div class="badge" :key='tag' v-for='tag in info.tags'>{{tag}}</div>
+      <i class="iconfont icon-sousuo" @click="collectBook"></i>
     </div>
     <div class="summary">
       <p :key='i' v-for='(sum,i) in info.summary'>{{sum}}</p>
@@ -40,8 +41,10 @@
 </template>
 
 <script>
-import store from '@/store'
 import Rate from '@/components/Rate'
+import store from '@/store'
+import config from '@/utils/config'
+import { getData,addData,showModal } from '@/utils/index'
 export default {
   components: {
     Rate
@@ -49,11 +52,44 @@ export default {
   props: ['info'],
   data () {
     return {
+      bookid: '',
       formatInfo:[]
     }
   },
-  mounted () {
-
+  methods:{
+    async collectBook () {
+      if(!store.state.userInfo.openid){
+        showModal("失败",'请先登录')
+        return
+      }
+      const bookid = this.bookid
+      const openid = store.state.userInfo.openid
+      const getcollectBook = await getData(config.collectBooksTableID,'bookid','=',bookid)
+      if (getcollectBook.length >= 1) {
+        getcollectBook.map(v => {
+          if(v.openid === openid) {
+            showModal("失败",'已收藏过该图书')
+            this.isCollect = true
+          }
+        })
+      }
+      if(this.isCollect) {
+        this.isCollect = false
+        return
+      }
+      const image = this.info.image
+      const addPersonName = store.state.userInfo.nickName
+      const title = this.info.title
+      const publisher = this.info.publisher
+      const rate =  this.info.rate
+      const author = this.info.author
+      const count = this.info.count
+      const dataInfo = {openid,image,bookid,title,addPersonName,publisher,rate,title,author,count}
+      addData(config.collectBooksTableID,dataInfo)
+    }
+  },
+  mounted(){
+    this.bookid = this.$root.$mp.query.id
   }
 }
 </script>
@@ -68,6 +104,10 @@ export default {
       border-radius: 10px;
       border:1px #EA5A49 solid;
       color:#EA5A49;
+    i
+      float: right;
+      margin-right: 20rpx;
+      margin-top: 20rpx;
     .summary
       padding:0 15px;
       margin-top:10px;
