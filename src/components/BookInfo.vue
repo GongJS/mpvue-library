@@ -32,7 +32,7 @@
     </div>
     <div class="tags">
       <div class="badge" :key='tag' v-for='tag in info.tags'>{{tag}}</div>
-      <i class="iconfont icon-sousuo" @click="collectBook"></i>
+      <i class="iconfont icon-cainixihuan" v-if="isCollect" @click="collectBook"></i>
     </div>
     <div class="summary">
       <p :key='i' v-for='(sum,i) in info.summary'>{{sum}}</p>
@@ -53,13 +53,13 @@ export default {
   data () {
     return {
       bookid: '',
-      formatInfo:[]
+      formatInfo:[],
+      isCollect: true
     }
   },
   methods:{
     async collectBook () {
       if(!store.state.userInfo.openid){
-        showModal("失败",'请先登录')
         return
       }
       const bookid = this.bookid
@@ -68,8 +68,7 @@ export default {
       if (getcollectBook.length >= 1) {
         getcollectBook.map(v => {
           if(v.openid === openid) {
-            showModal("失败",'已收藏过该图书')
-            this.isCollect = true
+            this.isCollect = false
           }
         })
       }
@@ -85,11 +84,17 @@ export default {
       const author = this.info.author
       const count = this.info.count
       const dataInfo = {openid,image,bookid,title,addPersonName,publisher,rate,title,author,count}
-      addData(config.collectBooksTableID,dataInfo)
+      const collectResult = await addData(config.collectBooksTableID,dataInfo)
+      if(collectResult.statusCode === 201) {
+        this.isCollect = false;
+        showModal("成功",'收藏图书成功')
+      }
+      console.log(collectResult)
     }
   },
   mounted(){
     this.bookid = this.$root.$mp.query.id
+    this.collectBook()
   }
 }
 </script>
@@ -107,7 +112,9 @@ export default {
     i
       float: right;
       margin-right: 20rpx;
-      margin-top: 20rpx;
+      margin-top: 8rpx;
+      color: red;
+      font-size: 60rpx;
     .summary
       padding:0 15px;
       margin-top:10px;

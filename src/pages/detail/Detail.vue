@@ -27,6 +27,9 @@
   <div v-if="userInfo.openid && isComment" class='text-footer'>
     已经发表过评论了
   </div>
+    <button class="btn" @click="backHome">
+      返回
+    </button>
   <button  open-type='share' class="btn">转发给好友</button>
 </div>
 
@@ -101,7 +104,7 @@ export default {
       this.comments = getBookComments || []
 
     },
-   async getGeo (e) {
+    async getGeo (e) {
       const ak = 'nEzZImjWniLd9hMOgXezCWvjYqa8c2WC'
       const url = 'https://api.map.baidu.com/geocoder/v2/'
       if (e.target.value) {
@@ -157,12 +160,16 @@ export default {
       wx.setNavigationBarTitle({
       title: this.info[0].title
       })
+    },
+    backHome () {
+      wx.reLaunch({
+        url: '/pages/me/main'
+      })
     }
   },
-  onShareAppMessage: function (res) {
+    onShareAppMessage: function (res) {
     if (res.from === 'button') {
       // 来自页面内转发按钮
-      console.log(res.target)
     }
     return {
       title: `${this.info.title}`,
