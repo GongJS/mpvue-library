@@ -7,16 +7,32 @@
       <YearProgress></YearProgress>
       <button v-if="userInfo.openid" @click='logOut' class='btn'>注销登录</button>
       <button v-if="userInfo.openid" @click='scanBook' class='btn'>添加图书</button>
+      <calendar
+        calendar-style="calendar"
+        header-style="header"
+        board-style="board"
+        :days-color="demoDays"
+      />
     </div>
   </div>
 </template>
 
 <script>
-import store from '@/store'
-import config from '@/utils/config'
-import { showSuccess,getData,addData,showModal } from '@/utils/index'
-import YearProgress from '@/components/YearProgress'
+import store from '@/store';
+import config from '@/utils/config';
+import { showSuccess,getData,addData,showModal } from '@/utils/index';
+import YearProgress from '@/components/YearProgress';
 export default {
+  data () {
+    return {
+      demoDays: [{
+        month: 'current',
+        day: new Date().getDate(),
+        color: 'yellow',
+        background: '#84e7d0'
+      }]
+    }
+  },
   components: {
     YearProgress
   },
@@ -82,8 +98,18 @@ export default {
 .container
   padding: 0 30rpx;
   .userinfo
-    margin-top: 100rpx;
+    margin-top: 50rpx;
     text-align: center;
+    .calendar
+      background-color: white;
+      padding-top: 10px;
+      border-radius: 15px;
+    .header
+      font-size: large;
+      color: #59518d;
+    .board
+      color: #c7cbe2;
+      font-weight: bold;
     img
       width: 150rpx;
       height: 150rpx;

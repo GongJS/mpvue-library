@@ -32,7 +32,7 @@
     </div>
     <div class="tags">
       <div class="badge" :key='tag' v-for='tag in info.tags'>{{tag}}</div>
-      <i class="iconfont icon-cainixihuan" v-if="isCollect" @click="collectBook"></i>
+      <i class="iconfont icon-cainixihuan"  @click="collectBook"></i>
     </div>
     <div class="summary">
       <p :key='i' v-for='(sum,i) in info.summary'>{{sum}}</p>
@@ -54,27 +54,28 @@ export default {
     return {
       bookid: '',
       formatInfo:[],
-      isCollect: true
     }
   },
   methods:{
     async collectBook () {
       if(!store.state.userInfo.openid){
+        showModal("失败",'请先登录')
         return
       }
       const bookid = this.bookid
       const openid = store.state.userInfo.openid
       const getcollectBook = await getData(config.collectBooksTableID,'bookid','=',bookid)
       if (getcollectBook.length >= 1) {
+        console.log(1111,getcollectBook);
         getcollectBook.map(v => {
+
           if(v.openid === openid) {
-            this.isCollect = false
+            console.log(v.openid);
+            console.log(openid);
+            showModal("失败",'已收藏过该图书')
+            return
           }
         })
-      }
-      if(this.isCollect) {
-        this.isCollect = false
-        return
       }
       const image = this.info.image
       const addPersonName = store.state.userInfo.nickName
@@ -86,7 +87,6 @@ export default {
       const dataInfo = {openid,image,bookid,title,addPersonName,publisher,rate,title,author,count}
       const collectResult = await addData(config.collectBooksTableID,dataInfo)
       if(collectResult.statusCode === 201) {
-        this.isCollect = false;
         showModal("成功",'收藏图书成功')
       }
       console.log(collectResult)
@@ -94,7 +94,6 @@ export default {
   },
   mounted(){
     this.bookid = this.$root.$mp.query.id
-    this.collectBook()
   }
 }
 </script>

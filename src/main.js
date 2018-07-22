@@ -13,6 +13,12 @@ export default{
       'navigationBarTitleText': '小回忆图书馆',
       'navigationBarTextStyle': 'light'
     },
+    'plugins': {
+      "calendar": {
+        "version": "1.1.3",
+        "provider": "wx92c68dae5a8bb046"
+      }
+    },
     'tabBar': {
       selectedColor: '#95E1D3',
       list: [

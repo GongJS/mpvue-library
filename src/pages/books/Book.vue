@@ -2,7 +2,9 @@
   <div>
     <BookHeader @searchBook='searchBook' @receive='receive'></BookHeader>
     <TopSwiper :tops='tops'></TopSwiper>
-    <Card :key='book.id' v-for='book in books' :book='book' type='libraryBook'></Card>
+    <div class="border-shadow">
+      <Card :key='book.id' v-for='book in books' :book='book' type='libraryBook'></Card>
+    </div>
     <p class='text-footer' v-if='searchResult'>
       找不到该书籍T_T
     </p>
@@ -102,6 +104,10 @@ export default {
 }
 </script>
 <style lang='stylus'>
+  .border-shadow
+    box-shadow: 0 2px 7px rgba(0,0,0,.15)
+    border-color: transparent
+    margin: 10rpx
   .text-footer
     font-size:32rpx
     margin-top:20rpx
