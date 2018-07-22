@@ -12,7 +12,7 @@
             <div class="right">
               {{book.rate}} <Rate :value='book.rate'></Rate>
             </div>
-            <div class="left">
+            <div class="left title">
               {{book.title}}
             </div>
           </div>
@@ -20,7 +20,7 @@
             <div class="right text-primary">
               浏览量:{{book.count}}
             </div>
-            <div class="left">
+            <div class="author">
               {{book.author}}
             </div>
           </div>
@@ -28,14 +28,14 @@
             <div class="right">
               {{book.addBookPerson}}
             </div>
-             <div class="left">
+             <div class="publisher">
               {{book.publisher}}
             </div>
           </div>
         </div>
     </a>
     <div class="delete" v-if="!(type === 'libraryBook')">
-      <i class="iconfont icon-jiantouarrow486" v-on:click="deleteItem"></i>
+      <i class="iconfont icon-changyonggoupiaorenshanchu" v-on:click="deleteItem"></i>
     </div>
   </div>
 
@@ -133,11 +133,13 @@ export default {
 </script>
 <style lang='stylus' scoped>
   .book-card
-    position: relative;
+    color: #495060;
     padding:5px;
     overflow: hidden;
     margin-top:5px;
     margin-bottom:5px;
+    margin-left: 15rpx;
+    margin-right: 15rpx;
     font-size:14px;
     box-shadow: 0 2px 7px rgba(0,0,0,.15);
     border-color: transparent;
@@ -157,9 +159,18 @@ export default {
         margin-bottom:3px;
       .right
         float: right;
+        color: #495060;
       .left
         margin-right:80px;
+        color: #1c2438;
+      .title
+        font-weight: bold;
+      .author
+        color: #80848f;
+      .publisher
+        color: #80848f;
     .delete
       float: right;
+      color: #80848f;
 </style>
 

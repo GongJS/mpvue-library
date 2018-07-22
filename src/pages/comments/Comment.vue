@@ -5,20 +5,30 @@
         <img class="img"
             src="./test.gif"
             mode='aspectFit'
-          >
+        >
     </div>
-    <CommentList v-if='userInfo.openid' type='user' :comments="comments">
-    </CommentList>
+
     <div v-if='userInfo.openid'>
-      <div class="page-title">添加的图书</div>
-      <Card v-for='(book,index) in scanBooks' :key='index' :book='book' type='scanBooks' @updateData="updateData"></Card>
-      <div v-if='!scanBooks.length'>暂时还没添加过书，快去添加几本吧</div>
+      <div class="page-title">添加的图书
+        <i class="iconfont icon-jiantouxia" @click="changeAddBookDisplay"></i>
+      </div>
+      <div v-if="displayAddBook">
+          <Card v-for='(book,index) in scanBooks' :key='index' :book='book' type='scanBooks' @updateData="updateData"></Card>
+          <div v-if='!scanBooks.length'>暂时还没添加过书，快去添加几本吧</div>
+      </div>
     </div>
-      <div v-if='userInfo.openid'>
-      <div class="page-title">收藏的图书</div>
-         <Card v-for='(book,index) in collectBooks' :key='index' :book='book' type='collectBooks' @updateData="updateData">></Card>
-      <div v-if='!collectBooks.length'>暂时还没收藏过书，快去收藏几本吧</div>
+
+    <div v-if='userInfo.openid'>
+        <div class="page-title">收藏的图书
+          <i class="iconfont icon-jiantouxia" @click="changeCollectBookDisplay"></i>
+        </div>
+        <div v-if="displayCollectBook">
+          <Card v-for='(book,index) in collectBooks' :key='index' :book='book' type='collectBooks' @updateData="updateData">></Card>
+          <div v-if='!collectBooks.length'>暂时还没收藏过书，快去收藏几本吧</div>
+      </div>
     </div>
+
+    <CommentList v-if='userInfo.openid' type='user' :comments="comments"></CommentList>
   </div>
 </template>
 <script>
@@ -33,6 +43,8 @@ export default {
       comments: [],
       scanBooks: [],
       collectBooks: [],
+      displayAddBook: true,
+      displayCollectBook: true
     }
   },
   components: {
@@ -45,6 +57,12 @@ export default {
     }
   },
   methods: {
+    changeAddBookDisplay(){
+      this.displayAddBook= !this.displayAddBook
+    },
+    changeCollectBookDisplay(){
+      this.displayCollectBook= !this.displayCollectBook
+    },
     init() {
       wx.showNavigationBarLoading()
       this.getComments()
@@ -100,4 +118,10 @@ export default {
     margin-bottom: 80rpx;
     .img
       margin-top 80rpx;
+  .page-title
+    background: #dddee1;
+    margin-bottom: 20rpx;
+    i
+      float: right;
+      margin-right: 25rpx;
 </style>

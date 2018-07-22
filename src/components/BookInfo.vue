@@ -112,7 +112,7 @@ export default {
       float: right;
       margin-right: 20rpx;
       margin-top: 8rpx;
-      color: red;
+      color: #80848f;
       font-size: 60rpx;
     .summary
       padding:0 15px;

@@ -9,17 +9,17 @@
               placeholder='请输入图书短评'></textarea>
     <div class='location'>
       地理位置：
-      <switch color='#EA5A49' :checked='location' @change='getGeo'></switch>
-      <span class='text-primary'>{{location}}</span>
+      <switch color='#2db7f5' :checked='location' @change='getGeo'></switch>
+      <span>{{location}}</span>
     </div>
     <div class='phone'>
       手机型号：
-      <switch color='#EA5A49' :checked='phone' @change='getPhone'></switch>
-      <span class='text-primary'>{{phone}}</span>
+      <switch color='#2db7f5' :checked='phone' @change='getPhone'></switch>
+      <span>{{phone}}</span>
     </div>
-    <button class="btn" @click='addComment'>
+    <i-button type="info" shape="circle" size="small" @click='addComment'>
       评论
-    </button>
+    </i-button>
   </div>
   <div v-if="!userInfo.openid" class='text-footer'>
     登录后才能发布评论
@@ -27,10 +27,10 @@
   <div v-if="userInfo.openid && isComment" class='text-footer'>
     已经发表过评论了
   </div>
-    <button class="btn" @click="backHome">
-      返回
-    </button>
-  <button  open-type='share' class="btn">转发给好友</button>
+  <div class="fix-bottom">
+    <i-button type="info" @click="backHome" shape="circle" size="small">返回</i-button>
+    <i-button  open-type='share' type="info" shape="circle" size="small">转发给好友</i-button>
+  </div>
 </div>
 
 </template>
@@ -188,14 +188,19 @@ export default {
 .comment
   margin-top:10px
   .textarea
-    width:730rpx
     height:200rpx
-    background:#eee
+    background:#fff
     padding:10rpx
+    border-radius: 10rpx;
+    border: 1px solid #dddee1;
+    margin-left: 10rpx;
+    margin-right: 10rpx;
   .location
-    margin-top:10px
-    padding:5px 10px
+    margin-top:10px;
+    padding:5px 10px;
+    color: #495060;
   .phone
     margin-top:10px
     padding:5px 10px;
+    color: #495060;
 </style>

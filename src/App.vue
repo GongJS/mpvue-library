@@ -19,6 +19,8 @@ export default {
 
 <style lang="stylus">
 @import '../static/iconfont/iconfont.css'
+  body
+    height: 100%;
   .text-footer
     text-align: center;
     font-size: 12px;
@@ -34,7 +36,7 @@ export default {
     float: right;
   .btn
     color:white;
-    background:#EA5A49;
+    background:#19be6b;
     margin-bottom: 10px;
     padding-left: 15px;
     padding-left: 15px;

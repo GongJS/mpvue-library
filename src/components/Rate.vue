@@ -23,6 +23,7 @@ export default {
   .rate
     position: relative;
     display: inline-block;
+    color: #495060;
     .hollow
       position: absolute;
       display: inline-block;

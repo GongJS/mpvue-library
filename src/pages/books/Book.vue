@@ -105,10 +105,9 @@ export default {
 </script>
 <style lang='stylus'>
   .border-shadow
-    box-shadow: 0 2px 7px rgba(0,0,0,.15)
-    border-color: transparent
-    margin: 10rpx
+    box-shadow: 0 2px 7px rgba(0,0,0,.15);
+    border-color: transparent;
   .text-footer
-    font-size:32rpx
-    margin-top:20rpx
+    font-size: 32rpx;
+    margin-top: 20rpx;
 </style>

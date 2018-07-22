@@ -9,7 +9,7 @@ export default{
     pages: ['^pages/books/main','pages/me/main'],
     'window': {
       'backgroundTextStyle': 'light',
-      'navigationBarBackgroundColor': '#F38181',
+      'navigationBarBackgroundColor': '#1c2438',
       'navigationBarTitleText': '小回忆图书馆',
       'navigationBarTextStyle': 'light'
     },

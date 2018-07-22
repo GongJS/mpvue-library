@@ -8,7 +8,6 @@ export default {
   config: {
     usingComponents: {
       'i-button': '/static/dist/button/index',
-      'i-icon':     '/static/dist/icon/index',
       'calendar': 'plugin://calendar/calendar'
     },
   }
