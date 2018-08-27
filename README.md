@@ -1,21 +1,18 @@
-# mpvue-zhixiaoyun
+# 小回忆图书馆
 
-> A Mpvue project
+> 一个基于`mpvue`开发的微信小程序，支持图书的扫码添加(通过豆瓣图书API)、图书查找、分类、收藏、删除等功能；后端用的`知晓云`。
 
-## Build Setup
+## 安装
 
-``` bash
-# install dependencies
-npm install
+`git clone git@github.com:GongJS/mpvue-library.git`
 
-# serve with hot reload at localhost:8080
-npm run dev
+`cd mpvue-library`
 
-# build for production with minification
-npm run build
+`npm install` 
 
-# build for production and view the bundle analyzer report
-npm run build --report
-```
+## 启动
 
-For detailed explanation on how things work, checkout the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+`npm run dev`
+用微信开发者工具打开此项目
+
+去[作者博客](https://gongjs.github.io/project/)扫小程序码，体验小程序
