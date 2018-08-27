@@ -1,8 +1,8 @@
 <template>
   <div class="comment-list">
     <div class="page-title" v-if='comments.length'>
-      评论
-      <i class="iconfont icon-jiantouxia" @click="changeCommentsDisplay"></i>
+      <span style="color: black;">评论</span>
+      <i class="iconfont icon-jiantouxia" style="color: black;" @click="changeCommentsDisplay"></i>
     </div>
     <div v-if="displayComments">
         <div class="comment"
@@ -59,12 +59,24 @@ export default {
 
 <style lang='stylus'>
   .comment-list
-    background:#eee;
+    color: black;
     font-size:14px;
-    i
-      margin-right: 25rpx;
+    border-radius: 4rpx;
+    .page-title
+      border-radius: 4rpx;
+      span
+        display: inline-block;
+        margin-top: 20rpx;
+      i
+        margin-right: 25rpx;
+        display: inline-block;
+        float: right;
+        margin-top: 20rpx;
     .comment
       background: white;
+      box-shadow:0 4rpx 14rpx rgba(0,0,0,0.15);
+      margin-left: 5rpx;
+      margin-right: 5rpx;
       margin-bottom:10px;
       padding:5px 20px;
       .content

@@ -1,11 +1,8 @@
 <template>
   <div class="container">
     <div class="login" v-if="!userInfo.openid">
-      没有登录T_T
-        <img class="img"
-            src="./test.gif"
-            mode='aspectFit'
-        >
+      <p> 没有登录T_T </p>
+      <button open-type="getUserInfo" @getuserinfo="userInfoHandler" v-if="!userInfo.openid" class='btn'>登录</button>
     </div>
 
     <div v-if='userInfo.openid'>
@@ -57,6 +54,19 @@ export default {
     }
   },
   methods: {
+    userInfoHandler(data) {
+      wx.BaaS.handleUserInfo(data.mp).then(
+        res => {
+          store.commit('updateUserInfo', res);
+          showSuccess('登录成功');
+          // res 包含用户完整信息，详见下方描述
+        },
+        res => {
+          // **res 有两种情况**：用户拒绝授权，res 包含基本用户信息：id、openid、unionid；其他类型的错误，如网络断开、请求超时等，将返回 Error 对象（详情见下方注解）
+          // *Tips*：如果你的业务需要用户必须授权才可进行，由于微信的限制，10 分钟内不可再次弹出授权窗口，此时可以调用 [`wx.openSetting`](https://mp.weixin.qq.com/debug/wxadoc/dev/api/setting.html) 要求用户提供授权
+        }
+      );
+    },
     changeAddBookDisplay(){
       this.displayAddBook= !this.displayAddBook
     },
@@ -114,10 +124,14 @@ export default {
     text-align: center;
     font-size: 60rpx;
     color: #515151;
-    margin-top: 80rpx;
     margin-bottom: 80rpx;
-    .img
-      margin-top 80rpx;
+    p
+      text-align: center;
+      font-size: 54rpx;
+      margin-top: 30rpx;
+    button
+      width: 90%;
+      margin-top: 30rpx;
   .page-title
     background: #dddee1;
     margin-bottom: 20rpx;

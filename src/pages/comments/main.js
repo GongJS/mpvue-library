@@ -7,5 +7,8 @@ app.$mount()
 export default{
   config:{
     enablePullDownRefresh:true,
+    usingComponents: {
+      'i-button': '/static/dist/button/index'
+    },
   }
 }
