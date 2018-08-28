@@ -16,7 +16,8 @@ const store = new Vuex.Store({
       state.userInfo = data
     },
     logOut (state) {
-      state.userInfo = {}
+      state.userInfo = {},
+      state.userInfo.avatarUrl = '../../static/img/unlogin.png'
     }
   }
 })

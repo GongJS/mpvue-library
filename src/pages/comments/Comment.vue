@@ -2,7 +2,7 @@
   <div class="container">
     <div class="login" v-if="!userInfo.openid">
       <p> 没有登录T_T </p>
-      <button open-type="getUserInfo" @getuserinfo="userInfoHandler" v-if="!userInfo.openid" class='btn'>登录</button>
+      <button open-type="getUserInfo" @getuserinfo="userInfoHandler" v-if="!userInfo.openid" class='btn'>马上登录</button>
     </div>
 
     <div v-if='userInfo.openid'>
@@ -24,7 +24,6 @@
           <div v-if='!collectBooks.length'>暂时还没收藏过书，快去收藏几本吧</div>
       </div>
     </div>
-
     <CommentList v-if='userInfo.openid' type='user' :comments="comments"></CommentList>
   </div>
 </template>
@@ -56,16 +55,18 @@ export default {
   methods: {
     userInfoHandler(data) {
       wx.BaaS.handleUserInfo(data.mp).then(
-        res => {
-          store.commit('updateUserInfo', res);
-          showSuccess('登录成功');
-          // res 包含用户完整信息，详见下方描述
+       async res => {
+        await store.commit('updateUserInfo', res)
+        this.getComments()
+        this.getScanBooks()
+        this.getCollectBook()
         },
         res => {
-          // **res 有两种情况**：用户拒绝授权，res 包含基本用户信息：id、openid、unionid；其他类型的错误，如网络断开、请求超时等，将返回 Error 对象（详情见下方注解）
-          // *Tips*：如果你的业务需要用户必须授权才可进行，由于微信的限制，10 分钟内不可再次弹出授权窗口，此时可以调用 [`wx.openSetting`](https://mp.weixin.qq.com/debug/wxadoc/dev/api/setting.html) 要求用户提供授权
         }
-      );
+      )
+     
+      this.getScanBooks()
+      
     },
     changeAddBookDisplay(){
       this.displayAddBook= !this.displayAddBook
@@ -84,11 +85,9 @@ export default {
       console.log(type);
       if(type === 'scanBooks') {
         this.getScanBooks()
-        console.log(111);
       }
       if(type === 'collectBooks') {
         this.getCollectBook()
-        console.log(222);
       }
     },
     async getScanBooks() {

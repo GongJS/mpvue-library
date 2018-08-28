@@ -8,6 +8,6 @@ export default{
   config:{
     usingComponents: {
       "calendar": "plugin://calendar/calendar"
-    },
+    }
   }
 }

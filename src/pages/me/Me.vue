@@ -20,7 +20,7 @@
 <script>
 import store from '@/store';
 import config from '@/utils/config';
-import { showSuccess,getData,addData,showModal } from '@/utils/index';
+import { getData, addData } from '@/utils/index';
 import YearProgress from '@/components/YearProgress';
 export default {
   data () {
@@ -43,7 +43,6 @@ export default {
   },
   methods: {
     logOut() {
-      console.log(store.state.userInfo)
       store.commit('logOut');
     },
     userInfoHandler(data) {
