@@ -1,7 +1,7 @@
 # 小回忆图书馆
 
 > 一个基于`mpvue`开发的微信小程序，支持图书的扫码添加(通过豆瓣图书API)、图书查找、分类、收藏、删除等功能；后端用的`知晓云`。
-
+<img src="https://gongjs.github.io/assets/img/library-3.1be9bf81.jpg" />
 ## 安装
 
 `git clone git@github.com:GongJS/mpvue-library.git`
